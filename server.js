@@ -11,6 +11,8 @@ const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
 
+const reviews = require('./data/reviews.json')
+
 /* ***********************
 * View Engine and Templates
 * ********************** */
@@ -25,7 +27,7 @@ app.use(static)
 
 // Index route
 app.get("/", function(req, res) {
-  res.render("index", {title: "Home"})
+  res.render("index", {title: "Home", reviews: reviews})
 })
 
 
