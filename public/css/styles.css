@@ -93,7 +93,7 @@ nav ul {
   flex-direction: row;
   list-style: none;
   margin: 0 auto;
-  padding: .5rem;
+  padding: .25rem;
 
 
   width: clamp(300px, 100%, 1500px);
@@ -101,7 +101,7 @@ nav ul {
 }
 
 nav > ul li {
-  padding: minmax(4px, 16px);
+  padding: 16px 4px;
 
   width: clamp(5%, 16rem, 16rem);
   text-align: center;
