@@ -305,6 +305,16 @@ nav ul li > a {
 
   background-color: black;
   object-fit: cover;
+
+  animation: fade_in 1s ease-in-out forwards;
+  animation-delay: .2s;
+  opacity: 0;
+
+}
+
+@keyframes fade_in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .namePrice h2 {
