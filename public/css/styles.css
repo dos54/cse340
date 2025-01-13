@@ -19,8 +19,12 @@
 
   --background-color: white;
 
+  --default-border: 1px solid rgba(0, 0, 0, 0.25);
+  --default-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.125);
+
   /* Fonts */
   --font-family: "Poppins", serif;
+  --font-size: clamp(.75rem, 1rem, 1.25rem);
 }
 
 @media (min-width: 1200px) {
@@ -249,4 +253,62 @@ nav ul li > a {
   background-color: var(--accent-color-300);
   border: 1px solid black;
 
+}
+
+/* ******** 
+ * Inventory Views 
+ * ********/
+#inv-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 250px));
+  grid-auto-rows: 275px;
+  gap: 16px;
+  padding: 0;
+  justify-content: center;
+
+  list-style: none;
+}
+
+#inv-display a {
+  color: var(--text-color-900);
+  text-decoration: none;
+}
+
+#inv-display > li {
+  /* box-shadow: 0 0 9px 3px gray; */
+  display: block;
+  border: var(--default-border);
+  padding: 4px;
+  border-radius: 6px;
+  box-shadow: var(--default-shadow);
+  width: 250px;
+  height: 275px;
+}
+
+#inv-display > li > a {
+  display: flex;
+  margin: 0 auto;
+  padding: 0;
+  width: 200px;
+  height: 150px;
+
+  justify-content: center;
+  align-items: center;
+}
+
+#inv-display .vehicle-image {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+
+  background-color: black;
+  object-fit: cover;
+}
+
+.namePrice h2 {
+  font-size: var(--font-size);
+  font-weight: 600;
+  min-height: 50px;
 }
