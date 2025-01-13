@@ -12,6 +12,7 @@ const app = express()
 const static = require("./routes/static")
 
 const reviews = require('./data/reviews.json')
+const baseController = require("./controllers/baseController")
 
 /* ***********************
 * View Engine and Templates
@@ -26,9 +27,7 @@ app.set("layout", "./layouts/layout")
 app.use(static)
 
 // Index route
-app.get("/", function(req, res) {
-  res.render("index", {title: "Home", reviews: reviews})
-})
+app.get("/", baseController.buildHome)
 
 
 /* ***********************
