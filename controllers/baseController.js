@@ -4,7 +4,7 @@ Author: Steven Thomas
 Date: January 12, 2025
 Purpose: Controller responsible for requests to
     the application in general. Not for specific
-    arease (such as the inventory or accounts)
+    areas (such as the inventory or accounts)
 ===============================================*/
 
 const utilities = require("../utilities/")

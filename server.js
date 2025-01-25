@@ -36,7 +36,11 @@ app.use("/inv", inventoryRoute)
 
 // File not found route- should always be the last in the list
 app.use(async (req, res, next) => {
-  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
+  next({
+    status: 404,
+    message:
+      "🌀 Whoops, you broke the internet! Just kidding, but this page is missing. Click around and keep exploring! 🌟",
+  });
 })
 
 /**
@@ -50,7 +54,8 @@ app.use( async (error, request, result, next) => {
   if(error.status == 404) {
     message = error.message
   } else {
-    message = "Oh no! There was a crash. Maybe try a different route?"
+    message =
+      "😅 Uh-oh! Our server encountered an error. Don’t worry, it’s just as embarrassed as we are 🙈. While we fix this 🔧, why not try exploring a different page? 🗺️ Click around and see what you discover!";
   }
   result.render("errors/error", { // Call the error.ejs view
     title: error.status || 'Server Error', // Title for the view

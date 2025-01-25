@@ -1,0 +1,49 @@
+/******* Change Box Model ***************/
+@media (min-width: 1200px) {
+
+  body {
+    border: 3px solid var(--accent-color-300);
+    margin: 1rem auto;
+    border-radius: 12px;
+    padding: .5rem;
+  }
+
+  html {
+    background-image: url('/images/site/checkerboard.jpg');
+  }
+
+  /************ 
+  * Hero
+  * ***********/
+  
+
+  /*********** 
+  * Main area of the main page
+  * ***********/
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+
+  .grid .reviews {
+    grid-column: 2/3;
+    grid-row: 1/2;
+  }
+
+  .grid .upgrades {
+    grid-column: 1/2;
+    grid-row: 1/2;
+  }
+
+  /* ******** 
+  * Inventory Views 
+  * ********/
+  .product-view {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+
+

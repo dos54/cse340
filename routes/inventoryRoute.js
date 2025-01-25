@@ -10,8 +10,10 @@ Purpose: Deliver inventory items, based on their classification,
 const express = require("express")
 const router = new express.Router()
 const invController = require("../controllers/invController")
+const utilities = require("../utilities/")
 
 // Route to build the inventory by classification view
-router.get("/type/:classificationId", invController.buildByClassificationId)
+router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId))
+router.get("/detail/:productId", utilities.handleErrors(invController.buildProductDetailsById))
 
 module.exports = router
