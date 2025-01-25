@@ -8,6 +8,7 @@ Purpose: All the functions required to interact
 ===============================================*/
 
 const pool = require("../database");
+const cache = {}
 
 // ==============================================
 // Section: Get all classification data
@@ -20,6 +21,12 @@ async function getClassifications() {
 
 // Get all inventory items and classification_name by classification_id
 async function getInventoryByClassificationId(classification_id) {
+  if (!cache.classification) cache.classification = {}
+  if (cache.classification[classification_id] && (cache.classification[classification_id].timestamp > Date.now() - 600 * 1000)) {
+    console.log(`Serving cached data for ${classification_id}`)
+    return cache.classification[classification_id].data
+  }
+
   try {
     const data = await pool.query(
       `SELECT * FROM public.inventory AS i
@@ -28,13 +35,24 @@ async function getInventoryByClassificationId(classification_id) {
             WHERE i.classification_id = $1`,
       [classification_id]
     );
+
+    cache.classification[classification_id] = {
+      data: data.rows,
+      timestamp: Date.now()
+    }
     return data.rows;
   } catch (error) {
     console.error(`getclassificationsbyid error: ${error}`);
+    throw error;
   }
 }
 
 async function getProductDetails(product_id) {
+  if (!cache.product) cache.product = {}
+  if (cache.product[product_id] && (cache.product[product_id].timestamp > Date.now() - 600 * 1000)) {
+    console.log(`Serving cached data for product: ${product_id}`)
+    return cache.product[product_id].data
+  }
   try {
     const data = await pool.query(
       `
@@ -54,6 +72,12 @@ async function getProductDetails(product_id) {
             `,
       [product_id]
     );
+
+    cache.product[product_id] = {
+      data: data.rows[0],
+      timestamp: Date.now()
+    }
+
     if (data.rows.length === 0) {
       throw new Error(`No product found with the ID ${product_id}`);
     }

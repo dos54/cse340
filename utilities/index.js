@@ -7,11 +7,17 @@ Purpose: Hold some utility functions
 
 const invModel = require("../models/inventory-model");
 const Util = {};
+const cache = {}
 
 // ==============================================
 // Section: Constructs the nav HTML unordered list
 // ===============================================
 Util.getNav = async function (req, res, next) {
+  if (cache.nav && (cache.timestamp > Date.now() - 3600 * 1000)) {
+    console.log("Serving cached nav data.")
+    return cache.nav
+  }
+
   let data = await invModel.getClassifications();
   const list = `
     <ul>
@@ -27,6 +33,9 @@ Util.getNav = async function (req, res, next) {
           .join("")}
     </ul>
     `;
+
+  cache.nav = list
+  cache.timestamp = Date.now()
 
   // This is the code given to us by the assignment. It is very hard to read, which I do not like, so I used a map function and
   // template literals instead.
