@@ -10,7 +10,7 @@
   --text-color-900: black;
   --text-color-100: white;
 
-  --accent-color-300: rgb(0, 155, 216);
+  --accent-color-300: rgb(8, 120, 165);
 
   --nav-background-color: rgb(0, 0, 37);
   --nav-hover-color: lightblue;
@@ -192,7 +192,7 @@ nav ul li > a {
   font-weight: bold;
   font-size: large;
   background-color: var(--accent-color-300);
-  color: var(--text-color-900);
+  color: var(--text-color-100);
   border-radius: 3px;
   box-shadow: 0px 0px 3px gray;
 }
@@ -278,7 +278,7 @@ nav ul li > a {
   /* box-shadow: 0 0 9px 3px gray; */
   display: block;
   border: var(--default-border);
-  padding: 4px;
+  padding: 16px;
   border-radius: 6px;
   box-shadow: var(--default-shadow);
   width: 250px;

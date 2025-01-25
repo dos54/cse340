@@ -12,6 +12,7 @@ const app = express()
 const static = require("./routes/static")
 const inventoryRoute = require("./routes/inventoryRoute")
 
+const utilities = require("./utilities")
 const reviews = require('./data/reviews.json')
 const baseController = require("./controllers/baseController")
 
@@ -28,11 +29,35 @@ app.set("layout", "./layouts/layout")
 app.use(static)
 
 // Index route
-app.get("/", baseController.buildHome)
+app.get("/", utilities.handleErrors(baseController.buildHome))
 
 // Inventory routes
 app.use("/inv", inventoryRoute)
 
+// File not found route- should always be the last in the list
+app.use(async (req, res, next) => {
+  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
+})
+
+/**
+ * Express Error Handler
+ * Place after all other middleware
+ * Unit 3, Basic Error Handling Activity
+ */
+app.use( async (error, request, result, next) => {
+  let nav = await utilities.getNav() // Build the navigation bar
+  console.error(`Error at: "${request.originalUrl}": ${error.message}`) // Send error to console with the requested Url and the message
+  if(error.status == 404) {
+    message = error.message
+  } else {
+    message = "Oh no! There was a crash. Maybe try a different route?"
+  }
+  result.render("errors/error", { // Call the error.ejs view
+    title: error.status || 'Server Error', // Title for the view
+    message: message, // Message for the view
+    nav // Pass the nav bar that we built previously
+  })
+})
 
 /* ***********************
  * Local Server Information
