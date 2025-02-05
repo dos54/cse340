@@ -1,0 +1,22 @@
+<% if (title) { %>
+ <h1><%= title %></h1>
+<% } else { 
+    res.redirect('/')
+} %>
+
+<%- messages() %>
+
+<form action="" id="login-form" class="web-form-1" method="post">
+    <label>
+        Email
+        <input type="email" name="account_email" id="email" autocomplete="email" required placeholder="example@example.com">
+    </label>
+    <label>
+        Password
+        <input type="password" name="account_password" id="password" autocomplete="current-password" required placeholder="ExamplePassword123$">
+    </label>
+    <span class="unhide-password">Show Password</span>
+    <button type="submit">Log In</button>
+    <p id="signup"><a href="/account/registration">Sign Up</a></p>
+    <script src="/js/showPasswordButton.js"></script>
+</form>

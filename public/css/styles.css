@@ -12,19 +12,19 @@
 
   --accent-color-300: rgb(8, 120, 165);
 
-  --nav-background-color: #000025;
-  --nav-hover-color: lightblue;
-
   --floater-color: rgba(255, 255, 255, .5);
 
   --background-color: white;
 
   --default-border: 1px solid rgba(0, 0, 0, 0.25);
-  --default-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.125);
+  --default-shadow: 0 4px 16px 2px rgba(0, 0, 0, 0.5);
 
   /* Fonts */
-  --font-family: "Poppins", serif;
+  --font-family: "Poppins", Arial, sans-serif;
   --font-size: clamp(.75rem, 1rem, 1.25rem);
+
+  --filter-button-on-hover: 1.08;
+  --filter-button-on-focus: 1.10;
 }
 
 .light {
@@ -276,6 +276,10 @@ main {
   margin: 0 auto;
   width: clamp(300px, 100%, 2000px);
 
+}
+
+a {
+  color: var(--md-sys-color-on-background);
 }
 
 /* ************* 
@@ -573,4 +577,121 @@ nav ul li > a {
 
 .product-view li p:first-child {
   font-weight: bold;
+}
+
+/* Messages */
+#messages {
+
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 8px auto;
+  /* background: var(--md-sys-color-secondary-container); */
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.notice {
+  padding: 0;
+  margin: 0;
+}
+
+.notice li {
+  width: auto;
+  color: var(--md-sys-color-on-secondary);
+  background: var(--md-sys-color-secondary);
+  border-radius: 8px;
+  box-shadow: var(--default-shadow);
+  list-style: none;
+  margin: 4px;
+  padding: .5rem 1rem;
+  text-align: center;
+}
+
+/* Login */
+.web-form-1 {
+  background: var(--md-sys-color-primary-container);
+  padding: 32px;
+  margin: 0 auto;
+  width: 80%;
+  max-width: 350px;
+  border-radius: 16px;
+  box-shadow: var(--default-shadow);
+  border: var(--default-border);
+}
+
+.web-form-1 label {
+  display: block;
+  font-weight: bold;
+  margin: .5rem auto;
+  width: auto;
+}
+
+
+.web-form-1 input {
+  display: block;
+  height: 48px;
+  border-radius: 4px;
+  border: var(--default-border);
+  width: 100%;
+  max-width: 300px;
+  font-size: 1rem;
+}
+
+.web-form-1 button[type="submit"], #signup {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: var(--default-border);
+
+  margin-top: 1rem;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 4px;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 300px;
+  height: 48px;
+}
+
+.web-form-1 button[type="submit"]:hover, #signup:hover {
+  filter:brightness(var(--filter-button-on-hover));
+  cursor: pointer;
+}
+
+.web-form-1 button[type="submit"]:focus, #signup:focus {
+  filter:brightness(var(--filter-button-on-hover));
+}
+
+.web-form-1 > legend {
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin: 0;
+  padding: 0;
+}
+
+#signup a, 
+#signup a:visited {
+  text-decoration: none;
+  color: inherit;
+  font-weight: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unhide-password {
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-container);
+  padding: 3px;
+  border-radius: 8px;
+  border: var(--default-border);
+}
+
+.unhide-password:hover {
+  cursor: pointer;
 }

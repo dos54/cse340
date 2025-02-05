@@ -1,0 +1,58 @@
+/*===============================================
+File: account-model.js
+Author: Steven Thomas
+Date: January 31, 2025
+Purpose: Model file for account actions
+===============================================*/
+
+const pool = require("../database/");
+
+// ==============================================
+// Section: Register a new account
+// ===============================================
+
+async function registerAccount(
+  account_firstname,
+  account_lastname,
+  account_email,
+  account_password
+) {
+  try {
+    const sql = `INSERT INTO account 
+        (
+            account_firstname,
+            account_lastname,
+            account_email,
+            account_password,
+            account_type
+        ) VALUES
+            ($1,
+             $2,
+             $3,
+             $4,
+             'Client'
+        ) RETURNING *
+        `;
+    return await pool.query(sql, [
+      account_firstname,
+      account_lastname,
+      account_email,
+      account_password,
+    ]);
+  } catch (error) {
+    return error.message;
+  }
+}
+
+async function findByEmail(email) {
+    try {
+        const sql = `SELECT EXISTS (SELECT 1 FROM account WHERE account_email = $1)`
+        const results = await pool.query(sql, [email]).rows[0].exists;
+        console.log("✅ Query result:", result);
+        return results
+    } catch (error) {
+        return false
+    }
+}
+
+module.exports = { registerAccount, findByEmail };

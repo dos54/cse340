@@ -1,0 +1,46 @@
+<% if (title) { %>
+ <h1><%= title %></h1>
+<% } else { 
+    res.redirect('/')
+} %>
+
+<%- messages() %>
+
+<% if (errors) { %>
+ <ul class="notice">
+    <% errors.array().forEach(error => { %>
+        <li><%= error.msg %></li>
+    <% }) %>
+ </ul>
+<% } %>
+
+<form action="/account/register" id="login-form" class="web-form-1" method="post">
+    <legend>Create an account</legend>
+    <p>All fields are required</p>
+    <label>
+        First Name
+        <input type="text" name="account_firstname" autocomplete="given-name" required placeholder="John">
+    </label>
+    <label>
+        Last Name
+        <input type="text" name="account_lastname" autocomplete="family-name" required placeholder="Doe">
+    </label>
+    <label>
+        Email
+        <input type="email" name="account_email" id="email" autocomplete="email" required placeholder="example@example.com">
+    </label>
+    <label>
+        Password
+        <input type="password" name="account_password" id="password" autocomplete="current-password" required placeholder="ExamplePassword123$"
+        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+    </label>
+    <span class="unhide-password">Show Password</span>
+    <label>
+        Confirm Password
+        <input type="password" name="confirm_password" id="confirm-password" autocomplete="current-password" required placeholder="ExamplePassword123$">
+    </label>
+    <span class="unhide-password">Show Password</span>
+    <p>Passwords must be a mininum of 12 characters and include 1 capital letter, 1 number, and 1 special character</p>
+    <button type="submit">Create Account</button>
+    <script src="/js/showPasswordButton.js"></script>
+</form>
