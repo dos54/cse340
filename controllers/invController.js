@@ -41,4 +41,110 @@ inventoryController.buildProductDetailsById = async function (req, res, next) {
   })
 };
 
+inventoryController.buildVehicleManagerPage = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("./inventory/inventory-manager", {
+    title: "Vehicle Management",
+    nav,
+
+  })
+}
+
+inventoryController.buildNewClassificationPage = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("./inventory/add-classification", {
+    title: "Add New Classification",
+    nav,
+    errors: null
+  })
+}
+
+inventoryController.addNewClassification = async function (req, res) {
+  let nav = await utilities.getNav()
+  const {
+    classification_name
+  } = req.body
+
+  const newClassificationResult = await inventoryModel.addNewClassification(
+    classification_name
+  )
+
+  if (newClassificationResult) {
+    utilities.invalidateNavCache()
+    req.flash(
+      "notice",
+      `Added new classification ${classification_name}`
+    )
+    res.status(201).redirect("/inv/")
+  } else {
+    req.flash("notice", "Sorry, there was a problem adding the classification")
+    res.status(501).render("inventory/add-classification", {
+      title: "Add New Classification",
+      nav,
+      errors: null,
+    })
+  }
+}
+
+inventoryController.buildNewVehiclePage = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  let classifications = await inventoryModel.getClassifications();
+
+  res.render("./inventory/add-vehicle", {
+    title: "Add New Vehicle",
+    nav,
+    classifications: classifications.rows,
+    errors: null,
+  });
+}
+
+inventoryController.addNewVehicle = async function (req, res) {
+  let nav = await utilities.getNav()
+
+  const {
+    classification_id,
+    inv_make,
+    inv_model,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_year,
+    inv_miles,
+    inv_color
+  } = req.body
+
+  const newVehicle = inventoryModel.addNewVehicle(
+    classification_id,
+    inv_make,
+    inv_model,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_year,
+    inv_miles,
+    inv_color
+  );
+
+  if (newVehicle) {
+    inventoryModel.invalidateInventoryCache()
+    req.flash(
+      "notice",
+      "Successfully added vehicle to inventory"
+    )
+    res.status(201).redirect("/inv/")
+  } else {
+    req.flash(
+      "notice",
+      "Sorry, there was a problem adding the vehicle"
+    );
+    res.status(501).render("inventory/add-vehicle", {
+      title: "Add New Vehicle",
+      nav,
+      errors: null,
+    });
+  }
+}
+
 module.exports = inventoryController;

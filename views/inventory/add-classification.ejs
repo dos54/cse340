@@ -1,0 +1,25 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
+<%- messages() %>
+
+<% if (errors) { %>
+ <ul class="notice">
+    <% errors.array().forEach(error => { %>
+        <li><%= error.msg %></li>
+    <% }) %>
+ </ul>
+<% } %>
+
+<form action="/inv/add-classification" method="post" id="new-classification-form" class="web-form-1 vehicle-manager">
+    <legend>Add a new vehicle classification</legend>
+    <label>
+        Classification Name
+        <input type="text" name="classification_name" id="classification-name" required pattern="^[A-Za-z]+$" placeholder="Sport" value="<%= locals.classification_name %>">
+    </label>
+    <button type="submit">Add Classification</button>
+    <p>Name must be alphabetic characters only</p>
+</form>

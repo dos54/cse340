@@ -467,7 +467,7 @@ nav ul li > a {
 #inv-display {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 250px));
-  grid-auto-rows: 275px;
+  grid-auto-rows: 325px;
   gap: 16px;
   padding: 0;
   justify-content: center;
@@ -489,7 +489,7 @@ nav ul li > a {
   border-radius: 6px;
   /* box-shadow: 0 0 4px 1px var(--md-sys-color-shadow); */
   width: 250px;
-  height: 275px;
+  height: 325px;
 }
 
 #inv-display > li > a {
@@ -497,7 +497,7 @@ nav ul li > a {
   margin: 0 auto;
   padding: 0;
   width: 200px;
-  height: 150px;
+  height: 200px;
 
   justify-content: center;
   align-items: center;
@@ -629,7 +629,9 @@ nav ul li > a {
 }
 
 
-.web-form-1 input {
+.web-form-1 input,
+.web-form-1 select,
+.web-form-1 textarea {
   display: block;
   height: 48px;
   border-radius: 4px;

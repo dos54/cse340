@@ -44,15 +44,14 @@ async function registerAccount(
   }
 }
 
-async function findByEmail(email) {
-    try {
-        const sql = `SELECT EXISTS (SELECT 1 FROM account WHERE account_email = $1)`
-        const results = await pool.query(sql, [email]).rows[0].exists;
-        console.log("✅ Query result:", result);
-        return results
-    } catch (error) {
-        return false
-    }
+async function checkExistingEmail (account_email) {
+  try {
+    const sql = `SELECT * FROM account WHERE account_email = $1`
+    const email = await pool.query(sql, [account_email]);
+    return email.rowCount
+  } catch (error) {
+    return error.message
+  }
 }
 
-module.exports = { registerAccount, findByEmail };
+module.exports = { registerAccount, checkExistingEmail };

@@ -8,7 +8,7 @@ Purpose: All the functions required to interact
 ===============================================*/
 
 const pool = require("../database");
-const cache = {}
+let cache = {}
 
 // ==============================================
 // Section: Get all classification data
@@ -90,8 +90,100 @@ async function getProductDetails(product_id) {
   }
 }
 
+async function addNewClassification(
+  classification_name
+) {
+  try {
+    const sql = `INSERT INTO classification (classification_name) 
+                        VALUES ($1) 
+                        RETURNING *`
+    return await pool.query(
+      sql,
+      [
+        classification_name
+      ]
+    )
+  } catch (error) {
+    return error.message
+  }
+}
+
+async function checkExistingClassification(classification_name) {
+  try {
+    const sql = `SELECT * FROM classification WHERE classification_name = $1`
+    const classification = await pool.query(sql, [classification_name])
+    return classification.rowCount
+  } catch (error) {
+    return error.message
+  }
+}
+
+async function addNewVehicle(
+      classification_id,
+    inv_make,
+    inv_model,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_year,
+    inv_miles,
+    inv_color
+) {
+  try {
+    const sql = `
+      INSERT INTO inventory (
+        classification_id,
+        inv_make,
+        inv_model,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_year,
+        inv_miles,
+        inv_color
+      ) VALUES (
+        $1,
+        $2,
+        $3,
+        $4,
+        $5,
+        $6,
+        $7,
+        $8,
+        $9,
+        $10
+      ) RETURNING *
+    `
+
+    return await pool.query(sql, [
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color,
+    ]);
+  } catch (error) {
+    return error.message
+  }
+}
+
+function invalidateInventoryCache() {
+  cache = {}
+}
+
 module.exports = {
   getClassifications,
   getInventoryByClassificationId,
   getProductDetails,
+  addNewClassification,
+  checkExistingClassification,
+  addNewVehicle,
+  invalidateInventoryCache,
 };

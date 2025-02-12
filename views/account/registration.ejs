@@ -19,25 +19,20 @@
     <p>All fields are required</p>
     <label>
         First Name
-        <input type="text" name="account_firstname" autocomplete="given-name" required placeholder="John">
+        <input type="text" name="account_firstname" autocomplete="given-name" required placeholder="John" value="<%= locals.account_firstname %>">
     </label>
     <label>
         Last Name
-        <input type="text" name="account_lastname" autocomplete="family-name" required placeholder="Doe">
+        <input type="text" name="account_lastname" autocomplete="family-name" required placeholder="Doe" value="<%= locals.account_lastname %>">
     </label>
     <label>
         Email
-        <input type="email" name="account_email" id="email" autocomplete="email" required placeholder="example@example.com">
+        <input type="email" name="account_email" id="email" autocomplete="email" required placeholder="example@example.com" value="<%= locals.account_email %>">
     </label>
     <label>
         Password
         <input type="password" name="account_password" id="password" autocomplete="current-password" required placeholder="ExamplePassword123$"
         pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
-    </label>
-    <span class="unhide-password">Show Password</span>
-    <label>
-        Confirm Password
-        <input type="password" name="confirm_password" id="confirm-password" autocomplete="current-password" required placeholder="ExamplePassword123$">
     </label>
     <span class="unhide-password">Show Password</span>
     <p>Passwords must be a mininum of 12 characters and include 1 capital letter, 1 number, and 1 special character</p>
