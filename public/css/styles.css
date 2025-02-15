@@ -697,3 +697,35 @@ nav ul li > a {
 .unhide-password:hover {
   cursor: pointer;
 }
+
+/* Inventory Manager */
+
+#vehicle-manager {
+  border-radius: 16px;
+
+  min-width: 300px;
+  width: 100%;
+  background: var(--md-sys-color-surface-variant);
+  padding: 8px 16px;
+  margin: 16px 0;
+}
+
+#vehicle-manager h2 {
+  padding: 0;
+  margin: 0;
+}
+
+#vehicle-manager table {
+  min-width: 280px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#vehicle-manager table th,
+#vehicle-manager table td {
+  text-align: left;
+}
+
+#vehicle-manager table tr {
+  border-bottom: 1px solid #ccc;
+}

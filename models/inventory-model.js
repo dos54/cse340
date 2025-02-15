@@ -21,12 +21,6 @@ async function getClassifications() {
 
 // Get all inventory items and classification_name by classification_id
 async function getInventoryByClassificationId(classification_id) {
-  if (!cache.classification) cache.classification = {}
-  if (cache.classification[classification_id] && (cache.classification[classification_id].timestamp > Date.now() - 600 * 1000)) {
-    console.log(`Serving cached data for ${classification_id}`)
-    return cache.classification[classification_id].data
-  }
-
   try {
     const data = await pool.query(
       `SELECT * FROM public.inventory AS i
@@ -36,14 +30,73 @@ async function getInventoryByClassificationId(classification_id) {
       [classification_id]
     );
 
-    cache.classification[classification_id] = {
-      data: data.rows,
-      timestamp: Date.now()
-    }
+
     return data.rows;
   } catch (error) {
     console.error(`getclassificationsbyid error: ${error}`);
     throw error;
+  }
+}
+
+async function getInventoryItemById(inv_id) {
+  const sql = `
+    SELECT * FROM inventory WHERE inv_id = $1
+  `
+  let data = await pool.query(sql, [inv_id])
+
+  if (!data.rows > 0 ) {
+    throw new Error("No item found with the id ", inv_id)
+  }
+
+  return data.rows[0]
+}
+
+async function updateInventoryItem(
+  classification_id,
+  inv_id,
+  inv_make,
+  inv_model,
+  inv_description,
+  inv_image,
+  inv_thumbnail,
+  inv_price,
+  inv_year,
+  inv_miles,
+  inv_color
+) {
+  const sql = `
+    UPDATE inventory 
+    SET
+      inv_make = $2,
+      inv_model = $3,
+      inv_description = $4,
+      inv_image = $5,
+      inv_thumbnail = $6,
+      inv_price = $7,
+      inv_year = $8,
+      inv_miles = $9,
+      inv_color = $10,
+      classification_id = $11
+    WHERE inventory.inv_id = $1
+  `;
+  try {
+    const data = await pool.query(sql, [
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color,
+      classification_id,
+    ]);
+
+    return data.rows;
+  } catch (error) {
+    console.log("Error updating vehicle ", inv_id, " ", error);
   }
 }
 
@@ -174,6 +227,16 @@ async function addNewVehicle(
   }
 }
 
+async function deleteInventoryItem(inv_id) {
+  try {
+    const sql = "DELETE FROM inventory WHERE inv_id = $1"
+    const data = await pool.query(sql, [inv_id])
+    return data
+  } catch (error) {
+    new Error(`There was an error when trying to delete item with id: ${inv_id}`)
+  }
+}
+
 function invalidateInventoryCache() {
   cache = {}
 }
@@ -186,4 +249,7 @@ module.exports = {
   checkExistingClassification,
   addNewVehicle,
   invalidateInventoryCache,
+  getInventoryItemById,
+  updateInventoryItem,
+  deleteInventoryItem,
 };

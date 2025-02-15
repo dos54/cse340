@@ -20,13 +20,7 @@
     <legend>Add a new vehicle</legend>
     <label for="inv-classification">
         Classification
-        <select name="classification_id" id="inv-classification" required>
-            <% if (classifications) { %>
-                <% classifications.forEach(classification => { %>
-                    <option value="<%= classification.classification_id %>"><%= classification.classification_name %></option>
-                <% }) %>
-            <% } %>
-        </select>
+        <%- classificationsList %>
     </label>
 
     <label for="inv-make">

@@ -7,32 +7,102 @@ Purpose: Deliver inventory items, based on their classification,
 ===============================================*/
 
 // Needed resources
-const express = require("express")
-const router = new express.Router()
-const invController = require("../controllers/invController")
-const utilities = require("../utilities/")
-const vehiclesValidate = require("../utilities/vehicle-validation")
-const inventoryController = require("../controllers/invController")
+const express = require("express");
+const router = new express.Router();
+const inventoryController = require("../controllers/invController");
+const utilities = require("../utilities/");
+const vehiclesValidate = require("../utilities/vehicle-validation");
+
+
+// ==============================================
+// Section: Pages / Views
+// ===============================================
 
 // Route to build the inventory by classification view
-router.get("/", utilities.handleErrors(invController.buildVehicleManagerPage))
-router.get("/new-classification", utilities.handleErrors(invController.buildNewClassificationPage))
-router.get("/new-vehicle", utilities.handleErrors(invController.buildNewVehiclePage))
-router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId))
-router.get("/detail/:productId", utilities.handleErrors(invController.buildProductDetailsById))
+router.get(
+  "/",
+  utilities.handleErrors(inventoryController.buildInventoryManagerPage)
+);
 
-router.post(
-    "/add-classification",
-    vehiclesValidate.newClassificationRules(), // Pass a [ruleset] (list of rules)
-    vehiclesValidate.checkClassificationData, // Pass the function used to validate the data
-    utilities.handleErrors(inventoryController.addNewClassification)
+// Build a page containing a form to add new classifications
+router.get(
+  "/new-classification",
+  utilities.handleErrors(inventoryController.buildNewClassificationPage)
+);
+
+// Build a page containing a form to add new vehicles
+router.get(
+  "/new-vehicle",
+  utilities.handleErrors(inventoryController.buildNewVehiclePage)
+);
+
+// Build a grid displaying inventory items
+router.get(
+  "/type/:classificationId",
+  utilities.handleErrors(inventoryController.buildByClassificationId)
+);
+
+// Build a detailed product page for a product
+router.get(
+  "/detail/:productId",
+  utilities.handleErrors(inventoryController.buildProductDetailsById)
+);
+
+// Build a page that allows editing a specified inventory item
+router.get(
+  "/edit/:inv_id",
+  utilities.handleErrors(inventoryController.buildEditInventoryItemView)
+);
+
+router.get(
+  "/delete/:inv_id",
+  utilities.handleErrors(inventoryController.buildDeleteInventoryItemView)
 )
 
-router.post(
-    "/add-vehicle",
-    vehiclesValidate.newVehicleRules(),
-    vehiclesValidate.checkNewVehicleData,
-    utilities.handleErrors(inventoryController.addNewVehicle)
+// ==============================================
+// Section: JSON routes
+// ===============================================
+
+// Get the inventory item and return a json object with its details
+router.get(
+  "/getInventory/:classification_id", 
+  utilities.handleErrors(inventoryController.getInventoryJSON)
 )
 
-module.exports = router
+// ==============================================
+// Section: POST routes
+// ===============================================
+
+// Add a new classification to the database
+router.post(
+  "/add-classification",
+  vehiclesValidate.newClassificationRules(), // Pass a [ruleset] (list of rules)
+  vehiclesValidate.checkClassificationData, // Pass the function used to validate the data
+  utilities.handleErrors(inventoryController.addNewClassification)
+);
+
+// Add a new vehicle to the database
+router.post(
+  "/add-vehicle",
+  vehiclesValidate.newVehicleRules(),
+  vehiclesValidate.checkNewVehicleData,
+  utilities.handleErrors(inventoryController.addNewVehicle)
+);
+
+// Update a vehicle in the database
+router.post(
+  "/update-vehicle",
+  vehiclesValidate.newVehicleRules(),
+  vehiclesValidate.checkUpdateVehicleData,
+  utilities.handleErrors(
+    inventoryController.updateVehicleDetails
+  )
+)
+
+// Delete a vehicle from the database
+router.post(
+  "/delete",
+  utilities.handleErrors(inventoryController.deleteItem)
+)
+
+module.exports = router;

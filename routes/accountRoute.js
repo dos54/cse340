@@ -11,7 +11,26 @@ const utilities = require("../utilities/");
 const accountController = require("../controllers/accountController");
 const registrationValidate = require("../utilities/account-validation")
 
+
+// ==============================================
+// Section: Handle Logins
+// ===============================================
+router.get("/", 
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.buildAccountManager)
+)
 router.get("/login/", utilities.handleErrors(accountController.buildLogin));
+
+router.post(
+  "/login",
+  // registrationValidate.loginRules(),
+  // registrationValidate.checkLoginData,
+  utilities.handleErrors(accountController.accountLogin)
+);
+
+// ==============================================
+// Section: Handle Registration
+// ===============================================
 router.get(
   "/registration/",
   utilities.handleErrors(accountController.buildRegistration)
@@ -24,8 +43,5 @@ router.post(
     utilities.handleErrors(accountController.registerAccount)
 )
 
-router.post("/login", (req, res) => {
-  res.status(200).send("login process");
-});
 
 module.exports = router;

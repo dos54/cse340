@@ -1,0 +1,79 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
+<%- messages() %>
+
+<% if (errors) { %>
+ <ul class="notice">
+    <% errors.array().forEach(error => { %>
+        <li><%= error.msg %></li>
+    <% }) %>
+ </ul>
+<% } %>
+
+
+
+<form action="/inv/update-vehicle" id="updateForm" method="post" class="web-form-1 vehicle-manager">
+    <legend>Add a new vehicle</legend>
+    
+    <input type="hidden" name="inv_id"
+        <% if (locals.inv_id) { %>
+            value="<%= locals.inv_id %>"
+        <% } %>>
+
+    <label for="inv-classification">
+        Classification
+        <%- classificationsDropdown %>
+    </label>
+
+    <label for="inv-make">
+        Make
+        <input type="text" name="inv_make" id="inv-make" required minlength="3" value="<%= inv_make %>">
+    </label>
+
+    <label for="inv-model">
+        Model
+        <input type="text" name="inv_model" id="inv-model" required minlength="3" value="<%= inv_model %>">
+    </label>
+
+    <label for="inv-description">
+        Description
+        <textarea name="inv_description" id="inv-description" required minlength="3"><%= inv_description %></textarea>
+    </label>
+
+    <label for="inv-image">
+        Image Path
+        <input type="text" name="inv_image" id="inv-image" required value="<%= inv_image %>">
+    </label>
+
+    <label for="inv-thumbnail">
+        Thumbnail Path
+        <input type="text" name="inv_thumbnail" id="inv-thumbnail" required value="<%= inv_thumbnail %>">
+    </label>
+
+    <label for="inv-price">
+        Price
+        <input type="number" name="inv_price" id="inv-price" required min="0" step="1" pattern="^\\d+$" value="<%= inv_price %>">
+    </label>
+
+    <label for="inv-year">
+        Year
+        <input type="number" name="inv_year" id="inv-year" required min="1900" max="<%= new Date().getFullYear() + 1 %>" value="<%= inv_year %>">
+    </label>
+
+    <label for="inv-miles">
+        Miles
+        <input type="number" name="inv_miles" id="inv-miles" required min="0" value="<%= inv_miles %>">
+    </label>
+
+    <label for="inv-color">
+        Color
+        <input type="text" name="inv_color" id="inv-color" required minlength="3" value="<%= inv_color %>">
+    </label>
+    <button type="submit" disabled>Update Vehicle</button>
+</form>
+
+<script defer src="/js/inv-update.js"></script>

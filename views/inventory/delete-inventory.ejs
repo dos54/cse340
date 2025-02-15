@@ -1,0 +1,49 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
+<%- messages() %>
+
+<% if (errors) { %>
+ <ul class="notice">
+    <% errors.array().forEach(error => { %>
+        <li><%= error.msg %></li>
+    <% }) %>
+ </ul>
+<% } %>
+
+
+
+<form action="/inv/delete" id="updateForm" method="post" class="web-form-1 vehicle-manager">
+    <legend>Delete this vehicle</legend>
+    <p>⚠️WARNING⚠️ This cannot be undone.</p>
+    
+    <input type="hidden" name="inv_id"
+        <% if (locals.inv_id) { %>
+            value="<%= locals.inv_id %>"
+        <% } %>>
+
+    <label for="inv-make">
+        Make
+        <input type="text" name="inv_make" id="inv-make" required minlength="3" value="<%= inv_make %>" readonly>
+    </label>
+
+    <label for="inv-model">
+        Model
+        <input type="text" name="inv_model" id="inv-model" required minlength="3" value="<%= inv_model %>" readonly>
+    </label>
+
+    <label for="inv-price">
+        Price
+        <input type="number" name="inv_price" id="inv-price" required min="0" step="1" pattern="^\\d+$" value="<%= inv_price %>" readonly>
+    </label>
+
+    <label for="inv-year">
+        Year
+        <input type="number" name="inv_year" id="inv-year" required min="1900" max="<%= new Date().getFullYear() + 1 %>" value="<%= inv_year %>" readonly>
+    </label>
+
+    <button type="submit">Delete Vehicle</button>
+</form>
