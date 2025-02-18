@@ -28,6 +28,28 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 );
 
+router.get(
+  "/edit/:account_id",
+  utilities.verifyOwnership,
+  utilities.handleErrors(accountController.updateAccountView)
+)
+
+router.post(
+  "/update-password",
+  utilities.verifyOwnership,
+  registrationValidate.updateAccountPasswordRules(),
+  registrationValidate.checkAccountPasswordData,
+  accountController.updateAccountPassword
+)
+
+router.post(
+  "/update-account",
+  utilities.verifyOwnership,
+  registrationValidate.updateAccountInformationRules(),
+  registrationValidate.checkAccountInformationData,
+  accountController.updateAccountInformation
+)
+
 // ==============================================
 // Section: Handle Registration
 // ===============================================
@@ -41,6 +63,16 @@ router.post(
     registrationValidate.registrationRules(),
     registrationValidate.checkRegistrationData,
     utilities.handleErrors(accountController.registerAccount)
+)
+
+
+// ==============================================
+// Section: Handle logouts
+// ===============================================
+router.get(
+  "/logout/",
+  utilities.handleErrors(accountController.logout)
+
 )
 
 

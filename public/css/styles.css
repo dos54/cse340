@@ -692,6 +692,7 @@ nav ul li > a {
   padding: 3px;
   border-radius: 8px;
   border: var(--default-border);
+  user-select: none;
 }
 
 .unhide-password:hover {

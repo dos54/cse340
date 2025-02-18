@@ -6,6 +6,7 @@ Purpose: Hold some utility functions
 ===============================================*/
 
 const invModel = require("../models/inventory-model");
+const accountModel = require("../models/account-model")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 const Util = {};
@@ -216,4 +217,51 @@ Util.checkLogin = (req, res, next) => {
   }
 }
 
+const privilegedRoles = [
+  "Employee",
+  "Admin"
+]
+
+Util.checkPrivilegedRole = async function (req, res, next) {
+  if (!res.locals.loggedin) {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+
+  const data = await accountModel.getAccountByEmail(res.locals.accountData.account_email)
+  if (privilegedRoles.includes(data.account_type)) {
+    return next()
+  }
+
+  req.flash("notice", "Sorry, but you don't have permission to do that.")
+  return res.redirect("/")
+}
+
+// Ensure that users can only edit their own data
+Util.verifyOwnership = async function (req, res, next) {
+  if (!res.locals.loggedin) {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+
+  const userId = req.params.account_id || req.body.account_id
+
+  if (!userId) {
+    req.flash("notice", "Invalid request")
+    return res.redirect("/")
+  }
+
+  const data = await accountModel.getAccountByUserId(
+    userId
+  );
+  if (res.locals.accountData.account_id === data.account_id) {
+    return next();
+  }
+
+  req.flash("notice", "Sorry, but you don't have permission to do that.");
+  return res.redirect("/");
+
+}
+
 module.exports = Util;
+

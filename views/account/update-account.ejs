@@ -1,0 +1,64 @@
+<% if (title) { %>
+ <h1><%= title %></h1>
+<% } else { 
+    res.redirect('/')
+} %>
+
+<%- messages() %>
+
+<% if (errors) { %>
+ <ul class="notice">
+    <% errors.array().forEach(error => { %>
+        <li><%= error.msg %></li>
+    <% }) %>
+ </ul>
+<% } %>
+
+<form action="/account/update-account" id="updateForm" method="post" class="web-form-1 account-manager">
+    <legend>Update Account Information</legend>
+    
+    <input type="hidden" name="account_id"
+        <% if (locals.accountData.account_id) { %>
+            value="<%= locals.accountData.account_id %>"
+        <% } %>
+    >
+
+    <label>
+        First Name
+        <input type="text" name="account_firstname" autocomplete="given-name" required value="<%= locals.accountData.account_firstname %>">
+    </label>
+    <label>
+        Last Name
+        <input type="text" name="account_lastname" autocomplete="family-name" required value="<%= locals.accountData.account_lastname %>">
+    </label>
+    <label>
+        Email
+        <input type="email" name="account_email" id="email" autocomplete="email" required value="<%= locals.accountData.account_email %>">
+    </label>
+
+    <button type="submit" disabled>Update Information</button>
+</form>
+
+<form action="/account/update-password" id="updatePasswordForm" method="post" class="web-form-1 account-manager">
+    <legend>Update Password</legend>
+    
+    <input type="hidden" name="account_id"
+        <% if (locals.accountData.account_id) { %>
+            value="<%= locals.accountData.account_id %>"
+        <% } %>
+    >
+    <p>Warning: Your previous password will no longer work.</p>
+    <label>
+        Password
+        <input type="password" name="account_password" id="password" autocomplete="current-password" required placeholder="ExamplePassword123$"
+        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+    </label>
+    <span class="unhide-password">Show Password</span>
+    <p>Passwords must be a mininum of 12 characters and include 1 capital letter, 1 number, and 1 special character</p>
+
+
+    <button type="submit" disabled>Change Password</button>
+</form>
+
+<script defer src="/js/account-update.js"></script>
+<script defer src="/js/showPasswordButton.js"></script>

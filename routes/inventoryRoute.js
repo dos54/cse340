@@ -21,18 +21,21 @@ const vehiclesValidate = require("../utilities/vehicle-validation");
 // Route to build the inventory by classification view
 router.get(
   "/",
+  utilities.checkPrivilegedRole,
   utilities.handleErrors(inventoryController.buildInventoryManagerPage)
 );
 
 // Build a page containing a form to add new classifications
 router.get(
   "/new-classification",
+  utilities.checkPrivilegedRole,
   utilities.handleErrors(inventoryController.buildNewClassificationPage)
 );
 
 // Build a page containing a form to add new vehicles
 router.get(
   "/new-vehicle",
+  utilities.checkPrivilegedRole,
   utilities.handleErrors(inventoryController.buildNewVehiclePage)
 );
 
@@ -51,13 +54,15 @@ router.get(
 // Build a page that allows editing a specified inventory item
 router.get(
   "/edit/:inv_id",
+  utilities.checkPrivilegedRole,
   utilities.handleErrors(inventoryController.buildEditInventoryItemView)
 );
 
 router.get(
   "/delete/:inv_id",
+  utilities.checkPrivilegedRole,
   utilities.handleErrors(inventoryController.buildDeleteInventoryItemView)
-)
+);
 
 // ==============================================
 // Section: JSON routes
@@ -76,6 +81,7 @@ router.get(
 // Add a new classification to the database
 router.post(
   "/add-classification",
+  utilities.checkPrivilegedRole,
   vehiclesValidate.newClassificationRules(), // Pass a [ruleset] (list of rules)
   vehiclesValidate.checkClassificationData, // Pass the function used to validate the data
   utilities.handleErrors(inventoryController.addNewClassification)
@@ -84,6 +90,7 @@ router.post(
 // Add a new vehicle to the database
 router.post(
   "/add-vehicle",
+  utilities.checkPrivilegedRole,
   vehiclesValidate.newVehicleRules(),
   vehiclesValidate.checkNewVehicleData,
   utilities.handleErrors(inventoryController.addNewVehicle)
@@ -92,17 +99,17 @@ router.post(
 // Update a vehicle in the database
 router.post(
   "/update-vehicle",
+  utilities.checkPrivilegedRole,
   vehiclesValidate.newVehicleRules(),
   vehiclesValidate.checkUpdateVehicleData,
-  utilities.handleErrors(
-    inventoryController.updateVehicleDetails
-  )
-)
+  utilities.handleErrors(inventoryController.updateVehicleDetails)
+);
 
 // Delete a vehicle from the database
 router.post(
   "/delete",
+  utilities.checkPrivilegedRole,
   utilities.handleErrors(inventoryController.deleteItem)
-)
+);
 
 module.exports = router;
