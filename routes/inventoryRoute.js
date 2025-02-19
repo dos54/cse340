@@ -112,4 +112,10 @@ router.post(
   utilities.handleErrors(inventoryController.deleteItem)
 );
 
+router.post(
+  "/add-comment",
+  utilities.checkLogin,
+  utilities.handleErrors(inventoryController.addComment)
+)
+
 module.exports = router;

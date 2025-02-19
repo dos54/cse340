@@ -5,3 +5,29 @@
 } %>
 
 <%- view %>
+
+<section class="comment-section">
+<% if (locals.loggedin) { %>
+    <form action="/inv/add-comment" method="post" class="web-form-2">
+        <legend>Add a comment</legend>
+        <p>Comment must contain at least 10 characters.</p>
+        <input type="hidden" name="account_id"
+        <% if (locals.accountData.account_id) { %>
+            value="<%= locals.accountData.account_id %>"
+            <% } %>>
+            <input type="hidden" name="inv_id"
+            <% if (product_id) { %> 
+                value="<%= product_id %>"
+                <% } %>>
+                
+        <label for="">Your Comment
+        <textarea name="comment_content" id="" rows="10" title="comment content"></textarea>
+        </label>
+        <button type="submit">Post Comment</button>
+    </form>
+<% } else { %>
+    <p>Please log in to comment.</p>
+<% } %>
+    
+<%- commentsSection %>
+<section>

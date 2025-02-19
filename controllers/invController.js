@@ -6,6 +6,7 @@ Purpose: Controller for the inventory route.
 ===============================================*/
 
 const inventoryModel = require("../models/inventory-model");
+const commentModel = require("../models/comment-model")
 const utilities = require("../utilities/");
 
 const inventoryController = {};
@@ -31,6 +32,7 @@ inventoryController.buildByClassificationId = async function (req, res, next) {
 inventoryController.buildProductDetailsById = async function (req, res, next) {
   const product_id = req.params.productId;
   const data = await inventoryModel.getProductDetails(product_id);
+  let commentsSection = await utilities.getCommentsSection(product_id)
   let view = await utilities.buildDetailedProductView(data);
   let nav = await utilities.getNav();
   const productName = `${data.year} ${data.make} ${data.model}`;
@@ -38,8 +40,51 @@ inventoryController.buildProductDetailsById = async function (req, res, next) {
     title: productName,
     nav,
     view,
+    commentsSection,
+    product_id,
   });
 };
+
+inventoryController.addComment = async function (req, res, next) {
+  try {
+    const {
+      account_id,
+      inv_id,
+      comment_content,
+    } = req.body
+
+    if (!account_id || !inv_id || !comment_content.trim()) {
+      req.flash("notice","Invalid comment data.")
+      res.redirect(`/inv/detail/${inv_id}`);
+      throw error
+    }
+
+    if (comment_content.trim().length < 10) {
+      req.flash("notice", "Your comment was too short.")
+      res.redirect(`/inv/detail/${inv_id}`);
+      throw error
+    }
+  
+    const commentCreationResults = await commentModel.addComment(account_id, inv_id, comment_content)
+    if (commentCreationResults) {
+      req.flash(
+        "notice",
+        "Comment successfully added"
+      )
+    } else {
+      req.flash(
+        "notice",
+        "There was an error adding your comment"
+      )
+    }
+    
+    res.redirect(`/inv/detail/${inv_id}`);
+  } catch (error) {
+    console.error("Error adding comment:", error)
+    req.flash("notice", "An unexpected error ocurred")
+    return res.redirect(`/inv/details/${inv_id}`)
+  }
+}
 
 inventoryController.buildInventoryManagerPage = async function (
   req,

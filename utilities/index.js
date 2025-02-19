@@ -7,6 +7,7 @@ Purpose: Hold some utility functions
 
 const invModel = require("../models/inventory-model");
 const accountModel = require("../models/account-model")
+const commentModel = require("../models/comment-model")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 const Util = {};
@@ -40,24 +41,31 @@ Util.getNav = async function (req, res, next) {
   cache.nav = list
   cache.timestamp = Date.now()
 
-  // This is the code given to us by the assignment. It is very hard to read, which I do not like, so I used a map function and
-  // template literals instead.
-
-  // let list = "<ul>"
-  // list += '<li><a href="/" title="Home page">Home</a></li>'
-  // data.rows.forEach(row => {
-  //     list += "<li>"
-  //     list += '<a href="/inv/type/' +
-  //         row.classification_id +
-  //         '" title="See our inventory of ' +
-  //         row.classification_name +
-  //         ' vehicles">' +
-  //         row.classification_name +
-  //         "</a>"
-  //     list += "</li>"
-  // })
   return list;
 };
+
+Util.getCommentsSection = async function (product_id) {
+  let data = await commentModel.getCommentsByInventoryId(product_id)
+  if (data.length > 0) {
+    const commentsSection = `
+      <ul>
+          ${data
+            .map(
+              (row) => `
+                <li data-comment-id="${row.comment_id}">
+                  <h3>${row.account_firstname}</h3>
+                  <p>${row.comment_content}</p>
+                </li>
+              `
+            ).join("")
+          }
+      </ul>
+    `
+    return commentsSection
+  } else {
+    return "<p>No comments yet.</p>"
+  }
+}
 
 // ==============================================
 // Section: Build the classification view in HTML
